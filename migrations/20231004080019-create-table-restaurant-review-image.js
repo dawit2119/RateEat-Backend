@@ -1,0 +1,52 @@
+'use strict';
+
+module.exports = {
+  up: async (queryInterface, Sequelize) => {
+    const tableExists = await queryInterface.sequelize.query(
+      `SELECT EXISTS (
+        SELECT 1
+        FROM   pg_tables
+        WHERE  schemaname = 'public'
+        AND    tablename = 'restaurant_review_images'
+      );`
+    );
+
+    if (!tableExists[0][0].exists) {
+      await queryInterface.createTable('restaurant_review_images', {
+        id: {
+          type: Sequelize.UUID,
+          defaultValue: Sequelize.UUIDV4,
+          allowNull: false,
+          primaryKey: true,
+        },
+        url: {
+          type: Sequelize.STRING(255),
+          allowNull: false,
+          defaultValue: '',
+        },
+        restaurant_review_id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          references: {
+            model: 'restaurant_reviews',
+            key: 'id',
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE',
+        },
+        createdAt: {
+          type: Sequelize.DATE,
+          allowNull: false,
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          allowNull: false,
+        },
+      });
+    }
+  },
+
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.dropTable('restaurant_review_images');
+  }
+};

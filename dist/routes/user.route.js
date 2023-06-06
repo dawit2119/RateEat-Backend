@@ -1,0 +1,23 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const user_controller_1 = require("../controllers/user.controller");
+const incentive_route_1 = __importDefault(require("./incentive.route"));
+const eat_list_route_1 = __importDefault(require("./eat_list.route"));
+const multer_1 = require("../middlewares/multer");
+const upload_image_1 = require("../middlewares/upload-image");
+const router = express_1.default.Router();
+router.use("/:userId", incentive_route_1.default);
+router.use("/:userId/favorites", eat_list_route_1.default);
+router.route("/").get(user_controller_1.getUsers).post(user_controller_1.createUser);
+router.route("/:id").get(user_controller_1.getUserById).delete(user_controller_1.deleteUser);
+router.put("/:id", multer_1.filterImage.single("file"), upload_image_1.uploadProfileImages, user_controller_1.updateUser);
+router.route("/telegram/:telegramId").get(user_controller_1.getUserByTelegramId);
+router.post("/check", user_controller_1.checkUserExists);
+router.get("/:userId/reviews", user_controller_1.getAllReviewsByUser);
+router.get("/:userId/restaurant_reviews", user_controller_1.getRestaurantReviewsByUser);
+router.get("/:userId/item_reviews", user_controller_1.getItemReviewsByUser);
+exports.default = router;

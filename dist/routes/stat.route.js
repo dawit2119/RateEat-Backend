@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const stat_controller_1 = require("../controllers/stat.controller");
+const router = (0, express_1.Router)({ mergeParams: true });
+router.get("/users", stat_controller_1.getUserStat);
+router.get("/restaurants", stat_controller_1.getRestaurantStat);
+router.get("/items", stat_controller_1.getItemStat);
+router.get("/", stat_controller_1.getAllStat);
+exports.default = router;

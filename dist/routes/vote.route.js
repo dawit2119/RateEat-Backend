@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const vote_controller_1 = require("../controllers/vote.controller");
+const router = (0, express_1.Router)({ mergeParams: true });
+router.route("/upvote-item-review").post(vote_controller_1.upvoteItemReview);
+router.route("/downvote-item-review").post(vote_controller_1.downvoteItemReview);
+router.route("/upvote-restaurant-review").post(vote_controller_1.upvoteRestaurantReview);
+router.route("/downvote-restaurant-review").post(vote_controller_1.downVoteRestaurantReview);
+exports.default = router;

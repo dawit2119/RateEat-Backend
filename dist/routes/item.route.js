@@ -1,0 +1,24 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const item_controller_1 = require("../controllers/item.controller");
+const item_review_route_1 = __importDefault(require("./item_review.route"));
+const ingredient_route_1 = __importDefault(require("./ingredient.route"));
+const item_tag_route_1 = __importDefault(require("./item_tag.route"));
+const item_tag_controller_1 = require("../controllers/item_tag.controller");
+const item_media_route_1 = __importDefault(require("./item_media.route"));
+const router = (0, express_1.Router)({ mergeParams: true });
+router.use("/:itemId/reviews", item_review_route_1.default);
+router.use("/:itemId/ingredients", ingredient_route_1.default);
+router.use("/:itemId/item_tags", item_tag_route_1.default);
+router.use("/:itemId/media", item_media_route_1.default);
+router.get("/item_tags", item_tag_controller_1.getAllItemTags);
+router.route("/").get(item_controller_1.getItems).post(item_controller_1.createItem);
+router.route("/search").get(item_controller_1.getItemsByName);
+router.get("/all/search", item_controller_1.getAllItemsForLiveSearch);
+router.route("/:itemId").get(item_controller_1.getItemById).put(item_controller_1.updateItem).delete(item_controller_1.deleteItem);
+router.route("/:itemId/recommendations").get(item_controller_1.getItemRecommendations);
+exports.default = router;
